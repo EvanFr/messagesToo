@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package grpc;
+option go_package = "example.com/grpc;grpc";
+
+
+service ClientServices {
+  rpc SubscribeService (Subscribe) returns (SubscribeEvent) {}
+}
+
+message SubscribeEvent{
+	string Event = 1;
+}
+message Subscribe {
+  string ClientId = 1; 
+}
+  

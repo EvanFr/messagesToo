@@ -4,7 +4,7 @@
 // - protoc             v3.21.4
 // source: service.proto
 
-package grpc
+package messagesToo
 
 import (
 	context "context"

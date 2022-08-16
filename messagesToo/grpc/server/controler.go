@@ -4,39 +4,39 @@ import (
 	"context"
 	"log"
 
-	"github.com/neocortical/mysvc"
-	mysvcgrpc "github.com/neocortical/mysvc/grpc"
+	messagesToo "github.com/EvanFr/messagesToo/messagesToo"
+	messagesToogrpc "github.com/EvanFr/messagesToo/messagesToo/grpc"
 )
 
 // userServiceController implements the gRPC UserServiceServer interface.
-type userServiceController struct {
-	userService mysvc.Service
+type clientServiceController struct {
+	clientService messagesToo.Service
 }
 
 // NewUserServiceController instantiates a new UserServiceServer.
-func NewUserServiceController(userService mysvc.Service) mysvcgrpc.UserServiceServer {
-	return &userServiceController{
-		userService: userService,
+func NewClientServiceController(clientService messagesToo.Service) messagesToogrpc.ClientServiceServer {
+	return &clientServiceController{
+		clientService: clientService,
 	}
 }
 
 // GetUsers calls the core service's GetUsers method and maps the result to a grpc service response.
-func (ctlr *userServiceController) GetUsers(ctx context.Context, req *mysvcgrpc.GetUsersRequest) (resp *mysvcgrpc.GetUsersResponse, err error) {
-	resultMap, err := ctlr.userService.GetUsers(req.GetIds())
+func (ctlr *clientServiceController) SubscribeService(ctx context.Context, req *messagesToogrpc.Subscribe) (resp *messagesToogrpc.SubscribeEvent, err error) {
+	resultMap, err := ctlr.clientService.SubscribeService(req.GetClientId())
 	if err != nil {
 		return
 	}
 
-	resp = &mysvcgrpc.GetUsersResponse{}
+	resp = &messagesToogrpc.SubscribeEvent{}
 	for _, u := range resultMap {
-		resp.Users = append(resp.Users, marshalUser(&u))
+		resp.Users = append(resp.Users, marshalClient(&u))
 	}
 
-	log.Printf("handled GetUsers(%v)\n", req.GetIds())
+	log.Printf("handled GetUsers(%v)\n", req.GetClientId())
 	return
 }
 
 // marshalUser marshals a business object User into a gRPC layer User.
-func marshalUser(u *mysvc.User) *mysvcgrpc.User {
-	return &mysvcgrpc.User{Id: u.ID, Name: u.Name}
+func marshalClient(u *messagesToo.User) *messagesToogrpc.User {
+	return &messagesToogrpc.User{Id: u.ID, Name: u.Name}
 }

@@ -8,9 +8,9 @@ import (
 type StreamingRawBytes struct {
 	Subscribe             *Subscribe             `json:"subscribe,omitempty"`
 	SubscribeEvent        *SubscribeEvent        `json:"subscribeEvent,omitempty"`
-	CreateDoc             *CreateDoc	     `json:"createDoc,omitempty"`
+	CreateDoc             *CreateDoc	         `json:"createDoc,omitempty"`
 	CreateDocEvent        *CreateDocEvent        `json:"createDocEvent,omitempty"`
-	ResolveDID            *ResolveDID	     `json:"resolveDID,omitempty"`
+	ResolveDID            *ResolveDID	         `json:"resolveDID,omitempty"`
 	ResolveDIDEvent       *ResolveDIDEvent       `json:"resolveDIDEvent,omitempty"`
 	DisseminateDID        *DisseminateDID        `json:"disseminateDID,omitempty"`
 	CreateTrustScore      *CreateTrustScore      `json:"createTrustScore,omitempty"`
@@ -73,8 +73,8 @@ type ReadTrustScoreEvent struct {
 
 type Service interface {
 	SubscribeService(StreamingRawBytes) (StreamingRawBytes, error)
-	CreateTrustScoreService(StreamingRawBytes) (StreamingRawBytes, error)
-	ReadTrustScoreService(StreamingRawBytes) (StreamingRawBytes, error)
+	//CreateTrustScoreService(StreamingRawBytes) (StreamingRawBytes, error)
+	//ReadTrustScoreService(StreamingRawBytes) (StreamingRawBytes, error)
 }
 
 type Client struct {

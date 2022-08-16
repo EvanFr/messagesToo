@@ -1,11 +1,16 @@
 syntax = "proto3";
 
 package grpc;
-option go_package = "example.com/grpc;grpc";
+option go_package = "ithub.com/EvanFr/messagesToo/messagesToo;messagesToo";
 
 
 service ClientServices {
   rpc SubscribeService (Subscribe) returns (SubscribeEvent) {}
+}
+
+message Client{
+  string ClientId = 1;
+  string Score = 2;
 }
 
 message SubscribeEvent{

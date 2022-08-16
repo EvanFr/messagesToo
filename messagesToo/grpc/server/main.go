@@ -1,19 +1,37 @@
-package mainimport (
+package main
+
+import (
+	"log"
 	"net"
-	"os"  mysvccore "github.com/neocortical/mysvc/core"
-	mysvcgrpc "github.com/neocortical/mysvc/grpc"
+	"os"
+
+	messagesToocore "github.com/EvanFr/messagesToo/messagesToo/core"
+	messagesToogrpc "github.com/EvanFr/messagesToo/messagesToo/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-  )func main() {  // configure our core service
-	userService := mysvccore.NewService()  // configure our gRPC service controller
-	userServiceController := NewUserServiceController(userService)  // start a gRPC server
+)
+
+func main() {
+
+	// configure our core service
+	clientService := messagesToocore.NewService()
+
+	// configure our gRPC service controller
+	clientServiceController := NewClientServiceController(clientService)
+
+	// start a gRPC server
 	server := grpc.NewServer()
-	mysvcgrpc.RegisterUserServiceServer(server, userServiceController)
-	reflection.Register(server)  con, err := net.Listen("tcp", os.Getenv("GRPC_ADDR"))
+	messagesToogrpc.RegisterClientServiceServer(server, clientServiceController)
+	reflection.Register(server)
+
+	con, err := net.Listen("tcp", os.Getenv("GRPC_ADDR"))
 	if err != nil {
-	  panic(err)
-	}  err = server.Serve(con)
-	if err != nil {
-	  panic(err)
+		panic(err)
 	}
-  }
+
+	log.Printf("Starting gRPC user service on %s...\n", con.Addr().String())
+	err = server.Serve(con)
+	if err != nil {
+		panic(err)
+	}
+}

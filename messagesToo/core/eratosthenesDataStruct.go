@@ -1,9 +1,8 @@
 package core
 
 import (
-	"errors"
 
-	"example.com/go-messages-grpc/messagesToo"
+	messagesToo "github.com/EvanFr/messagesToo/messagesToo"
 )
 
 const (
@@ -15,34 +14,38 @@ const (
 
 
 type service struct {
-	clients map[messagesToo.Client.ClientId]messagesToo.Client.Score
+	clients map[string]string
 }
 
-func DataBase(
+func NewService() messagesToo.Service {
 	return &service{
-		clients: map[messagesToo.Client.ClientId]messagesToo.Client.Score{
+		clients: map[string]string{
 			"one": "good",
 			"two": "bad",
 			"three": "very bad",
-		}
+		},
 	}
-)
+}
 
+/*
 var sub *messagesToo.StreamingRawBytes
 sub = &messagesToo.StreamingRawBytes{
 	Subscribe: &messagesToo.Subscribe{
 		ClientId: clientId,
 	},
 }
+*/
 
-func (s *service) SubscribeService(sub  *StreamingRawBytes) (subEvent *StreamingRawBytes, err error) {
-	if val, ok := s.clients[sub.Subscribe.ClientId]; ok{
+func (s *service) SubscribeService(sub  messagesToo.StreamingRawBytes) (subEvent messagesToo.StreamingRawBytes, err error) {
+	if _, ok := s.clients[sub.Subscribe.ClientId]; ok{
 		return subEvent, nil //TODO na ftiakso to subEvent
 	}
 
-	return subEvent, messagesToo.ErrNotFound
+	return subEvent, nil 
+	//return subEvent, messagesToo.ErrNotFound
 }
 
+/*
 var ts *messagesToo.StreamingRawBytes
 ts = &messagesToo.StreamingRawBytes{
 	CreateTrustScore: &messagesToo.CreateTrustScore{
@@ -50,36 +53,52 @@ ts = &messagesToo.StreamingRawBytes{
 		Score: score,
 	},
 }
+*/
 
-func (s *service) CreateTrustScoreService(ts *StreamingRawBytes) (tsEvent *StreamingRawBytes, err error) {
+/*
+func (s *service) CreateTrustScoreService(ts *messagesToo.StreamingRawBytes) (tsEvent*messagesToo.StreamingRawBytes, err error) {
 	s.clients[ts.CreateTrustScore.DeviceID] = ts.CreateTrustScore.Score
 
-	retunr tsEvent, nil // TODO na ftiakso to tsEvent
+	return tsEvent, nil // TODO na ftiakso to tsEvent
 }
+*/
 
+/*
 rts = *messagesToo.StreamingRawBytes
 rts = &messagesToo.StreamingRawBytes{
 	ReadTrustScore: &messagesToo.ReadTrustScore{
 		DeviceID: deviceId,
 	},
 }
+*/
 
-func (s *service) ReadTrustScoreService(rts *StreamingRawBytes) (rtsEvent *ReadTrustScoreEvent, err error) {
+/*
+func (s *service) ReadTrustScoreService(rts *messagesToo.StreamingRawBytes) (rtsEvent *messagesToo.StreamingRawBytes, err error) {
 	
-	if val, ok := s.clients[rts.ReadTrustScore.DeviceID]; ok
+	var value string
+	var flag bool
+
+	value = "notfound"
+	flag = false
+
+	if val, ok := s.clients[rts.ReadTrustScore.DeviceID]; ok{
+		value = val
+		flag = ok
+	}
 	
-	rtsEvent = *messagesToo.StreamingRawBytes
 	rtsEvent = &messagesToo.StreamingRawBytes{
-		ReadTrustScoreEvent: &messagesToo.ReadTrustScoreevent{
-			Score val//TODO na fiakso san diktionary to service
-		}
+		ReadTrustScoreEvent: &messagesToo.ReadTrustScoreEvent{
+			Score: value,
+		},
 	}
 
-	if ok {
+	if flag {
 		return rtsEvent, nil
 	}
-	return rtsEvent, messagesToo.ErrNotFound
-}
+	return rtsEvent, nil
 
+	//return rtsEvent, messagesToo.ErrNotFound //TODO
+}
+*/
 
 
